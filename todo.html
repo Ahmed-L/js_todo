@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+    <script src="todo.js"></script>
+
+    <div class="container-fluid">
+        <div class="add-task d-flex">
+            <div class="form-group">
+                <form class="input-form">
+                    <input type="text" id="input" placeholder="Add a new task" onkeypress="keypress_Submit(event)">
+                    <button type="button" id="add_btn" class="add-todo button" onclick="entry()">Add</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="task-list">
+            <ul id="list">
+
+            </ul>
+        </div>
+    </div>
+    
+</body>
+</html>
