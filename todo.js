@@ -131,6 +131,9 @@ function addTask(task) // Tasks object as args
     {
         if(e.target==listNode_form_delete_btn)
         {
+            var flag = confirm("Are you sure you want to delete the task?");
+            if(!flag)
+                return;
             console.log("size of map before:" + taskList_hashmap.size);
             var id = e.target.parentElement.parentElement.id;
             id = (Number)(id);
@@ -171,6 +174,9 @@ function addTask(task) // Tasks object as args
 
 function entry()
 {
+    var input = document.getElementById("input").value;
+    if(input==="")
+        return;
     var task = createTask();
     console.log(task.task_string);
     addTask(task);
