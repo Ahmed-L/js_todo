@@ -54,7 +54,7 @@ function addTask(task) // Tasks object as args
 
     listNode_form_completed.type = "checkbox";
     listNode_form_span.contentEditable = true;
-    listNode_form_delete_btn.type = "button"; listNode_form_delete_btn.classList ="btn btn-primary";
+    listNode_form_delete_btn.type = "button";
     listNode_form_delete_btn.innerText = "Delete";
 
     // setting vals Tasks -> listNode forms
@@ -119,10 +119,8 @@ function addTask(task) // Tasks object as args
                 console.log(temp2);
                 console.log(temp2.isCompleted);
                 console.log("reached");
-                //temp2.setCompleted();
                 temp2.isCompleted = !temp2.isCompleted;
                 console.log(temp2.isCompleted);
-
                 updateLocalStorage();
             }
             catch{console.log("error in getting item at idx:", idx)}
@@ -139,17 +137,20 @@ function addTask(task) // Tasks object as args
             document.getElementById("list").removeChild(document.getElementById(id));
             taskList_hashmap.delete(id);
             console.log("size of map before:" + taskList_hashmap.size);
-
-            // update local storage
             updateLocalStorage();
         }
     })
 
-    // change? input?
+    listNode_form.addEventListener("keydown", function(e)
+    {
+        if(e.keyCode===13)
+        {
+            e.preventDefault();
+            e.target.blur();
+        }
+    })
     listNode_form_span.addEventListener("input", function(e)
     {
-        console.log(e.target);
-        console.log("input event Triggered");
         if(e.target==listNode_form_span)
         {
             try{
@@ -159,11 +160,7 @@ function addTask(task) // Tasks object as args
                 var temp2 = taskList_hashmap.get(idx);
                 const updatedString = e.target.textContent;
                 temp2.task_string = updatedString;
-                
-                // update
                 updateLocalStorage();
-                //console.log("size of map after:" + taskList_hashmap.size);
-                //console.log(taskList_hashmap);
             }
             catch{console.log("error in getting item at idx: ", idx)}
         }
@@ -177,16 +174,6 @@ function entry()
     var task = createTask();
     console.log(task.task_string);
     addTask(task);
-    // try
-    // {
-    //     console.log("***** task: ");
-    //     console.log(taskList_hashmap.get(2));
-    // }
-    // catch
-    // {
-    //     console.log("waiting for more tasks to be created");
-    // }
-
 }
 
 
