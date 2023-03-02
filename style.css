@@ -1,0 +1,61 @@
+.input{
+    width: 50vh;
+}
+
+.container{
+    margin: auto;
+    width: max-content;
+    /* background-color: green; */
+}
+
+.d-flex{
+    flex-direction: column;
+}
+
+.input-group{
+    /* background-color: rgb(200, 127, 31); */
+    margin: 15px auto 0;
+    width: max-content;
+}
+
+.task-input{
+    border-radius: 10px;
+    width: auto;
+    min-width: 200px;
+    max-width: 1000px;
+}
+
+#add_btn{
+    padding: 10px;
+}
+
+body{
+    background-color: rgb(86, 92, 92);
+}
+ul {
+    list-style-type: none;
+}
+
+.task-container{
+    /* background-color: aqua; */
+    height: max-content;
+}
+
+.checkbox{
+    margin-right: 10px;
+}
+
+.edit_btn{
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+.task-container button{
+    border-radius: 10px;
+}
+
+.task-input{
+    display: inline-block;
+}
+
