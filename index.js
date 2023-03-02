@@ -47,6 +47,8 @@ x.addEventListener("click", function(e)
     }
     else if(e.target.classList.contains("delete"))
     {   
+        let flag = confirm("Are you sure you want to delete the task?");
+        if(!flag) return;
         list.forEach((x, i)=> {
             if(x.id == c.id)
                 list.splice(i, 1);
