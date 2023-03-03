@@ -1,8 +1,11 @@
-class Task{
-    constructor(str){this.content = str;this.id = new Date().getTime();this.isComplete = false;}
-}
-
 var list = []
+const dom_user_input =  document.getElementById("input");
+const dom_task_container = document.getElementById("task-container");
+const dom_task = document.getElementById("dom-task");
+
+class Task{
+    constructor(content){this.content = content;this.id = new Date().getTime();this.isComplete = false;}
+}
 if(window.localStorage.getItem("tasks")!==null)
     list = JSON.parse(window.localStorage.getItem("tasks"));
 
@@ -10,42 +13,39 @@ document.getElementById("add_btn").addEventListener("click", addTask);
 
 function addTask()
 {
-    const str = document.getElementById("input").value;
-    if(str==="")
+    const task_input_string = dom_user_input.value.trim();
+    if(task_input_string==="")
         return;
-    let task = new Task(str);
-    document.getElementById("input").value = "";
+    let task = new Task(task_input_string);
+    dom_user_input.value = "";
     list.push(task);
-    if(updateLocalStorage())
+    const success = updateLocalStorage();
+    if(success)
         addToDOM(task);
 }
-function addToDOM(t)
+function addToDOM(task)
 {
-    let task_node = document.getElementById("0").cloneNode(true);
+    let task_node = dom_task.cloneNode(true);
     task_node.hidden = false;
-    task_node.id = t.id;
-    task_node.getElementsByTagName("input")[1].value = t.content;
-    document.getElementById("list").insertAdjacentElement("afterbegin", task_node);
-    setCheckedStatus(task_node.querySelector(".checkbox"), t)
+    task_node.id = task.id;
+    task_node.getElementsByTagName("input")[1].value = task.content;
+    dom_task_container.insertAdjacentElement("afterbegin", task_node);
+    setCheckedStatus(task_node.querySelector(".checkbox"), task)
 }
 
-window.onload = ()=>{
-    list.forEach(x => addToDOM(x));
-}
-
-var x = document.getElementById("list");
-x.addEventListener("click", function(e)
+dom_task_container.addEventListener("click", function(event)
 {
-    const c = e.target.parentElement.parentElement;
-    if(e.target.classList.contains("checkbox"))
+    const c = event.target.parentElement.parentElement;
+    if(event.target.classList.contains("checkbox"))
     {
-        const id = e.target.parentElement.parentElement.id;
+        const id = event.target.parentElement.parentElement.id;
         const t = list.find(x => x.id == id);
         t.isComplete = !t.isComplete;
-        if(updateLocalStorage())
-            setCheckedStatus(e.target, t);
+        const success = updateLocalStorage();
+        if(success)
+            setCheckedStatus(event.target, t);
     }
-    else if(e.target.classList.contains("delete"))
+    else if(event.target.classList.contains("delete"))
     {   
         let flag = confirm("Are you sure you want to delete the task?");
         if(!flag) return;
@@ -53,16 +53,17 @@ x.addEventListener("click", function(e)
             if(x.id == c.id)
                 list.splice(i, 1);
         })
-        if(updateLocalStorage())
+        const success = updateLocalStorage();
+        if(success)
             c.parentElement.removeChild(c);
     }
-    else if(e.target.classList.contains("edit_btn"))
+    else if(event.target.classList.contains("edit_btn"))
     {
-        let input_ele = e.target.parentElement.getElementsByTagName("input")[1];
-        if(e.target.textContent==="Edit")
+        let input_ele = event.target.parentElement.getElementsByTagName("input")[1];
+        if(event.target.textContent==="Edit")
         {
             input_ele.disabled = false;
-            e.target.textContent = "Save";
+            event.target.textContent = "Save";
             input_ele.focus();
         }
         else
@@ -72,10 +73,11 @@ x.addEventListener("click", function(e)
                 if(x.id == c.id)
                     x.content = content;
             });
-            if(!updateLocalStorage())
+            const success = updateLocalStorage();
+            if(!success)
                 return;
             input_ele.disabled = true;
-            e.target.textContent = "Edit";
+            event.target.textContent = "Edit";
         }
     }
 });
@@ -84,7 +86,11 @@ function updateLocalStorage()
     try{window.localStorage.setItem("tasks", JSON.stringify(list)); return true;}
     catch(e){console.log("Error occured in saving data to local storage", e.message); return false;}
 }
-function setCheckedStatus(e, t){
-    e.checked = t.isComplete;
-    e.parentElement.getElementsByTagName("input")[1].style.textDecoration = t.isComplete? "line-through":"none";
+function setCheckedStatus(event, task){
+    event.checked = task.isComplete;
+    event.parentElement.getElementsByTagName("input")[1].style.textDecoration = task.isComplete? "line-through":"none";
+}
+
+window.onload = ()=>{
+    list.forEach(x => addToDOM(x));
 }
