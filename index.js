@@ -2,15 +2,12 @@ var list = []
 const dom_user_input =  document.getElementById("input");
 const dom_task_container = document.getElementById("task-container");
 const dom_task = document.getElementById("dom-task");
+const add_btn = document.getElementById("add_btn")
+add_btn.addEventListener("click", addTask);
 
 class Task{
     constructor(content){this.content = content;this.id = new Date().getTime();this.isComplete = false;}
 }
-if(window.localStorage.getItem("tasks")!==null)
-    list = JSON.parse(window.localStorage.getItem("tasks"));
-
-document.getElementById("add_btn").addEventListener("click", addTask);
-
 function addTask()
 {
     const task_input_string = dom_user_input.value.trim();
@@ -35,7 +32,7 @@ function addToDOM(task)
 
 dom_task_container.addEventListener("click", function(event)
 {
-    const c = event.target.parentElement.parentElement;
+    const parent_element = event.target.parentElement.parentElement;
     if(event.target.classList.contains("checkbox"))
     {
         const id = event.target.parentElement.parentElement.id;
@@ -49,13 +46,13 @@ dom_task_container.addEventListener("click", function(event)
     {   
         let flag = confirm("Are you sure you want to delete the task?");
         if(!flag) return;
-        list.forEach((x, i)=> {
-            if(x.id == c.id)
-                list.splice(i, 1);
+        list.forEach((ele, index)=> {
+            if(ele.id == parent_element.id)
+                list.splice(index, 1);
         })
         const success = updateLocalStorage();
         if(success)
-            c.parentElement.removeChild(c);
+            parent_element.parentElement.removeChild(parent_element);
     }
     else if(event.target.classList.contains("edit_btn"))
     {
@@ -69,9 +66,9 @@ dom_task_container.addEventListener("click", function(event)
         else
         {
             const content = input_ele.value;
-            list.forEach((x)=> {
-                if(x.id == c.id)
-                    x.content = content;
+            list.forEach((ele)=> {
+                if(ele.id == parent_element.id)
+                    ele.content = content;
             });
             const success = updateLocalStorage();
             if(!success)
@@ -90,6 +87,9 @@ function setCheckedStatus(event, task){
     event.checked = task.isComplete;
     event.parentElement.getElementsByTagName("input")[1].style.textDecoration = task.isComplete? "line-through":"none";
 }
+
+if(window.localStorage.getItem("tasks")!==null)
+    list = JSON.parse(window.localStorage.getItem("tasks"));
 
 window.onload = ()=>{
     list.forEach(x => addToDOM(x));
