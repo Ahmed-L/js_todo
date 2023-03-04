@@ -4,6 +4,7 @@ const dom_task_container = document.getElementById("task-container");
 const dom_task = document.getElementById("dom-task");
 const add_btn = document.getElementById("add_btn")
 add_btn.addEventListener("click", addTask);
+dom_user_input.addEventListener("keypress", (event)=>{event.key==="Enter"?add_btn.click():{}});
 
 class Task{
     constructor(content){this.content = content;this.id = new Date().getTime();this.isComplete = false;}
